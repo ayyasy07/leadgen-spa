@@ -1,0 +1,1 @@
+"Body: " . substr($res-, 0, 200) . "\n\n";

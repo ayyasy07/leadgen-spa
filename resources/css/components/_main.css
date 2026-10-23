@@ -1,0 +1,5 @@
+.main {
+    @apply py-5;
+    background-color: rgb(var(--color-primary));
+    background-image: none;
+}
