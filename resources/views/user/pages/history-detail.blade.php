@@ -619,6 +619,10 @@
                 'no-show'   => 'fa-user-slash',
                 'expired'   => 'fa-hourglass-end',
             ][$booking->status] ?? 'fa-clock';
+
+            // Cek apakah waktu treatment udah lewat / hari-H
+            $treatmentTime = \Carbon\Carbon::parse($booking->booking_date->format('Y-m-d') . ' ' . $booking->booking_time);
+            $isPast = $treatmentTime->isPast();
         @endphp
 
         {{-- BOOKING CODE --}}
@@ -831,7 +835,7 @@
         @endif
 
         {{-- SECTION: CANCEL BOOKING --}}
-        @if($booking->canBeCancelled())
+        @if($booking->canBeCancelled() && !$isPast)
             <div class="card">
                 <div class="action-section">
                     <h3>Cancel Booking</h3>
@@ -877,7 +881,7 @@
     </div>
 
     {{-- MODAL CANCEL --}}
-    @if($booking->canBeCancelled())
+    @if($booking->canBeCancelled() && !$isPast)
         @php
             $isPaid = $booking->status === 'paid';
             $hoursBefore = null;
